@@ -72,7 +72,8 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
     private FragmentManager fragmentManager;
     private MapStatusUpdate mapStatusUpdate;
     private Button hideButton;
-    private Marker markerA;
+    private Marker[] markers;
+    private Marker locationIcon;
     private InfoWindow infoWindow;
     private MyLocationConfiguration.LocationMode mCurrentMode;
     private LocationClient mLocClient;
@@ -81,7 +82,7 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
     private float mCurrentX;
     public static BitmapDescriptor setLocationIcon;
     private GeoCoder geoCoder;
-    public static  double latitude;
+    public static double latitude;
     public static double longitude;
     public static String geoInfo;
 
@@ -109,11 +110,43 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
      * @param icons
      */
     public void setIcon(Icon[] icons) {
+        int index = 0;
+        markers = new Marker[icons.length];
         for (Icon i : icons) {
-            bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding);
-            setIcon();
-            initOverlay(i.getLatitude(), i.getLangitude(), bitmapDescriptor);
+            Bitmap bitmap = BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), R.drawable.icon_gcoding);
+            bitmap = icon_format(bitmap, 75, 75);
+            bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
+            setIcon(index);
+            initOverlay(i.getLatitude(), i.getLangitude(), bitmapDescriptor, index);
+            index++;
         }
+    }
+
+    private void setIcon(final int index) {
+        baiduMap = mapView.getMap();
+        baiduMap.setMyLocationEnabled(true);
+        mapStatusUpdate = MapStatusUpdateFactory.zoomTo(17.0f);
+        baiduMap.setMapStatus(mapStatusUpdate);
+
+        baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            public boolean onMarkerClick(final Marker marker) {
+                hideButton = new Button(MainActivity.mainActivity.getApplicationContext());
+                InfoWindow.OnInfoWindowClickListener listener = null;
+                if (marker == markers[index]) {
+                    Log.e(" dsfds", "sfd ");
+                    hideButton.setBackgroundColor(0x000000);
+                    listener = new InfoWindow.OnInfoWindowClickListener() {
+                        public void onInfoWindowClick() {
+//                            Log.e(" dsfds","sfd ");
+                        }
+                    };
+                    LatLng ll = marker.getPosition();
+                    infoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(hideButton), ll, -47, listener);
+                    baiduMap.showInfoWindow(infoWindow);
+                }
+                return true;
+            }
+        });
     }
 
     private void setIcon() {
@@ -126,10 +159,12 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
             public boolean onMarkerClick(final Marker marker) {
                 hideButton = new Button(MainActivity.mainActivity.getApplicationContext());
                 InfoWindow.OnInfoWindowClickListener listener = null;
-                if (marker == markerA) {
+                if (marker == locationIcon) {
+                    Log.e(" dsfds", "sfd ");
                     hideButton.setBackgroundColor(0x000000);
                     listener = new InfoWindow.OnInfoWindowClickListener() {
                         public void onInfoWindowClick() {
+//                            Log.e(" dsfds","sfd ");
                         }
                     };
                     LatLng ll = marker.getPosition();
@@ -148,6 +183,34 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
      * @param langitude
      * @param bitmapDescriptor
      */
+    private void initOverlay(double latitude, double langitude, BitmapDescriptor bitmapDescriptor, int index) {
+        LatLng latLng = new LatLng(latitude, langitude);
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .icon(bitmapDescriptor)
+                .zIndex(9)
+                .draggable(true);
+        markers[index] = (Marker) (baiduMap.addOverlay(markerOptions));
+
+        MapStatus mMapStatus = new MapStatus.Builder()
+                .target(latLng)
+                .zoom(17)
+                .build();
+        MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
+        baiduMap.setMapStatus(mMapStatusUpdate);
+        baiduMap.setOnMarkerDragListener(new BaiduMap.OnMarkerDragListener() {
+            public void onMarkerDrag(Marker marker) {
+            }
+
+            public void onMarkerDragEnd(Marker marker) {
+            }
+
+            public void onMarkerDragStart(Marker marker) {
+            }
+        });
+    }
+
+
     private void initOverlay(double latitude, double langitude, BitmapDescriptor bitmapDescriptor) {
         LatLng latLng = new LatLng(latitude, langitude);
         MarkerOptions markerOptions = new MarkerOptions()
@@ -155,7 +218,7 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
                 .icon(bitmapDescriptor)
                 .zIndex(9)
                 .draggable(true);
-        markerA = (Marker) (baiduMap.addOverlay(markerOptions));
+        locationIcon = (Marker) (baiduMap.addOverlay(markerOptions));
 
         MapStatus mMapStatus = new MapStatus.Builder()
                 .target(latLng)
@@ -338,7 +401,7 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
         latitude = currentPt.latitude;
         longitude = currentPt.longitude;
         setPosition(latitude, longitude, setLocationIcon);
-
+        Log.e("sdfsf", "" + currentPt.latitude + currentPt.longitude);
     }
 
     private void showGeoInfo(LatLng latLng) {
@@ -352,7 +415,7 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
      * 点击新位置 删除前一个位置的icon
      */
     private void removeIcon() {
-        markerA.remove();
+        locationIcon.remove();
     }
 
     /**
@@ -420,11 +483,11 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
         intent.putExtra("latitude", latitude);
         intent.putExtra("longitude", longitude);
         intent.putExtra("geoInfo", geoInfo);
-        Log.e("ddf",latitude+longitude+geoInfo);
+        Log.e("ddf", latitude + longitude + geoInfo);
         MainActivity.mainActivity.startActivity(intent);
     }
 
-    public void getLotionInfo(){
+    public void getLotionInfo() {
 
     }
 }

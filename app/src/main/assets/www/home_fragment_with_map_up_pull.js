@@ -5,7 +5,11 @@ function showAddressInfo(content){
 
 
 function Info(){
-   alert("666")
     var val=$('#a').val();
     console.log(val);
+    cordova.exec(success, fail, "CallBack", "search", [val]);
+            var success = function () {
+            };
+            var fail = function () {
+            };
 }

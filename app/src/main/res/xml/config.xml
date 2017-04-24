@@ -21,4 +21,8 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="CallBack">
+        <param name="android-package" value="com.cgwx.yyfwptz.lixiang.leifeng0_2.utils.CallBack" />
+        <param name="onload" value="true" />
+    </feature>
 </widget>

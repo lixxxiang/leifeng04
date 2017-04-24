@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.baidu.mapapi.map.TextureMapView
+        android:id="@+id/bmapView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true" />
+
+    <Button
+        android:id="@+id/changeView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_map_black_48dp" />
+
+    <Button
+        android:id="@+id/panorama"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/changeView"
+        android:layout_alignRight="@+id/changeView"
+        android:layout_below="@+id/changeView"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/main_map_icon_streetscape_selected"
+        />
+
+
+    <com.yinglan.scrolllayout.ScrollLayout
+        android:id="@+id/scroll_down_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:fillViewport="true"
+        app:exitOffset="0dp"
+        app:isSupportExit="true"
+        app:maxOffset="200dp"
+        app:minOffset="50dp"
+        app:mode="exit">
+
+        <LinearLayout
+            android:id="@+id/content_scroll_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
+
+            <org.apache.cordova.engine.SystemWebView
+                android:id="@+id/cordovaWebView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+    </com.yinglan.scrolllayout.ScrollLayout>
+
+
+</RelativeLayout>

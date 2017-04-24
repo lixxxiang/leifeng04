@@ -18,6 +18,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.TextureMapView;
+import com.baidu.mapapi.model.LatLng;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.R;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.entities.Icon;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.presenters.HomeFragment.HomeFragmentWithMap2Presenter;
@@ -58,6 +59,8 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
 
     @BindView(R.id.changeView)
     Button changeView;
+    @BindView(R.id.panorama)
+    Button panoramaView;
     public static SystemWebView systemWebView;
 
     private FragmentManager fragmentManager;
@@ -129,6 +132,12 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
             @Override
             public void onClick(View v) {
                 fpresenter.changeFragment();
+            }
+        });
+        panoramaView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fpresenter.panoramaView();
             }
         });
         return view;

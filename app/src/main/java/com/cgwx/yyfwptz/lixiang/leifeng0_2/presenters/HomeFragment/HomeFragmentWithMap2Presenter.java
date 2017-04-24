@@ -3,6 +3,7 @@ package com.cgwx.yyfwptz.lixiang.leifeng0_2.presenters.HomeFragment;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -40,6 +42,7 @@ import com.cgwx.yyfwptz.lixiang.leifeng0_2.models.modelInterface.OnSendArrayList
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.models.modelInterface.OnSendStringListener;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.presenters.BasePresenter;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.activity.MainActivity;
+import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.activity.PanoramaActivity;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.DetectFragmentWithMap;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.MyOrientationListener;
@@ -64,7 +67,7 @@ import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap
  * Created by yyfwptz on 2017/3/27.
  */
 
-public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWithMap2, HomeFragmentWithMapModelImpl> implements OnGetGeoCoderResultListener{
+public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWithMap2, HomeFragmentWithMapModelImpl> implements OnGetGeoCoderResultListener {
 
     private FragmentManager fragmentManager;
     private MapStatusUpdate mapStatusUpdate;
@@ -78,6 +81,9 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
     private float mCurrentX;
     public static BitmapDescriptor setLocationIcon;
     private GeoCoder geoCoder;
+    public static  double latitude;
+    public static double longitude;
+    public static String geoInfo;
 
 
     @Override
@@ -98,18 +104,19 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
     }
 
     /**
-     *  添加地标  测试
+     * 添加地标  测试
+     *
      * @param icons
      */
     public void setIcon(Icon[] icons) {
         for (Icon i : icons) {
             bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding);
             setIcon();
-            initOverlay(i.getLatitude(), i.getLangitude(),bitmapDescriptor);
+            initOverlay(i.getLatitude(), i.getLangitude(), bitmapDescriptor);
         }
     }
 
-    private void setIcon(){
+    private void setIcon() {
         baiduMap = mapView.getMap();
         baiduMap.setMyLocationEnabled(true);
         mapStatusUpdate = MapStatusUpdateFactory.zoomTo(17.0f);
@@ -136,6 +143,7 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
 
     /**
      * 添加标志物 子方法
+     *
      * @param latitude
      * @param langitude
      * @param bitmapDescriptor
@@ -148,6 +156,7 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
                 .zIndex(9)
                 .draggable(true);
         markerA = (Marker) (baiduMap.addOverlay(markerOptions));
+
         MapStatus mMapStatus = new MapStatus.Builder()
                 .target(latLng)
                 .zoom(17)
@@ -199,7 +208,8 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
                     .show();
             return;
         }
-        systemWebView.loadUrl("javascript:showAddressInfo(\"" + reverseGeoCodeResult.getAddress() + "\")");
+        geoInfo = reverseGeoCodeResult.getAddress();
+        systemWebView.loadUrl("javascript:showAddressInfo(\"" + geoInfo + "\")");
 
 
     }
@@ -238,6 +248,7 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
 
     /**
      * 初始化定位
+     *
      * @param res
      */
     public void initLocation(Resources res) {
@@ -268,6 +279,7 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
 
     /**
      * R.drawable.location_marker 图标有问题 对图标的旋转操作
+     *
      * @param origin
      * @param alpha
      * @return
@@ -289,20 +301,20 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
     }
 
     /**
-     *  长按添加当前点图标
+     * 长按添加当前点图标
+     *
      * @param res
      */
-    public void setLocation(final Resources res)
-    {
+    public void setLocation(final Resources res) {
         final int[] flag = {0};
         baiduMap.setOnMapLongClickListener(new BaiduMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                if(flag[0] == 0){
+                if (flag[0] == 0) {
                     showIcon(res, latLng);
                     scrollLayout.setToOpen();
                     flag[0] = 1;
-                }else{
+                } else {
                     removeIcon();
                     scrollLayout.setToOpen();
                     showIcon(res, latLng);
@@ -313,19 +325,23 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
 
     /**
      * 添加图标
+     *
      * @param res
      * @param latLng
      */
-    private void showIcon(Resources res, LatLng latLng){
+    private void showIcon(Resources res, LatLng latLng) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.icon_focus_marka, options);
         setLocationIcon = BitmapDescriptorFactory.fromBitmap(icon_format(bitmap, 75, 120));
         currentPt = latLng;
         showGeoInfo(currentPt);
-        setPosition(currentPt.latitude, currentPt.longitude, setLocationIcon);
+        latitude = currentPt.latitude;
+        longitude = currentPt.longitude;
+        setPosition(latitude, longitude, setLocationIcon);
+
     }
 
-    private void showGeoInfo(LatLng latLng){
+    private void showGeoInfo(LatLng latLng) {
         geoCoder = GeoCoder.newInstance();
         geoCoder.setOnGetGeoCodeResultListener(this);
         geoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(latLng));
@@ -333,28 +349,30 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
     }
 
     /**
-     *  点击新位置 删除前一个位置的icon
+     * 点击新位置 删除前一个位置的icon
      */
-    private void removeIcon(){
+    private void removeIcon() {
         markerA.remove();
     }
 
     /**
-     *  长按添加图标 子方法
+     * 长按添加图标 子方法
+     *
      * @param latitude
      * @param langitude
      * @param bitmapDescriptor
      */
-    private void setPosition(double latitude, double langitude, BitmapDescriptor bitmapDescriptor){
+    private void setPosition(double latitude, double langitude, BitmapDescriptor bitmapDescriptor) {
         setIcon();
-        initOverlay(latitude,langitude, bitmapDescriptor);
+        initOverlay(latitude, langitude, bitmapDescriptor);
     }
 
     /**
      * 上拉菜单
+     *
      * @param scrollLayout
      */
-    public void initialScrollLayout(ScrollLayout scrollLayout){
+    public void initialScrollLayout(ScrollLayout scrollLayout) {
         scrollLayout.setOnScrollChangedListener(mOnScrollChangedListener);
         scrollLayout.getBackground().setAlpha(0);
     }
@@ -397,5 +415,16 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
         });
     }
 
+    public void panoramaView() {
+        Intent intent = new Intent(MainActivity.mainActivity, PanoramaActivity.class);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitude);
+        intent.putExtra("geoInfo", geoInfo);
+        Log.e("ddf",latitude+longitude+geoInfo);
+        MainActivity.mainActivity.startActivity(intent);
+    }
 
+    public void getLotionInfo(){
+
+    }
 }

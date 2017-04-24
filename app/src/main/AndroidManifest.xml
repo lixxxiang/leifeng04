@@ -50,6 +50,11 @@
             android:name=".view.activity.SendSmallVideoActivity"
             android:theme="@style/AppNoBarTheme" />
 
+        <activity
+        android:name=".view.activity.PanoramaActivity"
+        android:theme="@style/AppNoBarTheme">
+
+        </activity>
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

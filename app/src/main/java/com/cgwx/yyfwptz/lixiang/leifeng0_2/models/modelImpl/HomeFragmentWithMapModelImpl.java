@@ -96,6 +96,8 @@ public class HomeFragmentWithMapModelImpl implements HomeFragmentWithMapModelInt
     public void geturl(String request, OnSendStringListener listener) {
         if(request.equals(Constants.homeFragmentWithMapUpPullURL)){
             listener.sendString(Constants.homeFragmentWithMapUpPullURL);
+        }else if (request.equals(Constants.homeFragmentIconInfoURL)){
+            listener.sendString(Constants.homeFragmentIconInfoURL);
         }
     }
 }

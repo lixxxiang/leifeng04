@@ -76,7 +76,7 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private CordovaWebView cordovaWebView;
     private ConfigXmlParser configXmlParser;
-    private String URL;
+    public static String URL;
 
 
     public HomeFragmentWithMap2() {
@@ -100,8 +100,8 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
         systemWebView = (SystemWebView) view.findViewById(R.id.cordovaWebView);
         scrollLayout = (ScrollLayout) view.findViewById(R.id.scroll_down_layout);
         mapView = (TextureMapView) view.findViewById(R.id.bmapView);
-        fpresenter.getURLRequest(Constants.homeFragmentWithMapUpPullURL);
-        systemWebView.loadUrl(URL);
+//        fpresenter.getURLRequest(Constants.homeFragmentWithMapUpPullURL);
+//        systemWebView.loadUrl(URL);
         cordovaWebView = new CordovaWebViewImpl(new SystemWebViewEngine(systemWebView));
         configXmlParser = new ConfigXmlParser();
         configXmlParser.parse(getActivity());

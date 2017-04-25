@@ -39,12 +39,11 @@
         android:id="@+id/scroll_down_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000"
+        android:background="#00000000"
         android:fillViewport="true"
         app:exitOffset="0dp"
         app:isSupportExit="true"
         app:maxOffset="200dp"
-        app:minOffset="50dp"
         app:mode="exit">
 
         <LinearLayout

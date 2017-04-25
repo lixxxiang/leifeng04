@@ -41,6 +41,7 @@ import com.cgwx.yyfwptz.lixiang.leifeng0_2.models.modelImpl.HomeFragmentWithMapM
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.models.modelInterface.OnSendArrayListener;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.models.modelInterface.OnSendStringListener;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.presenters.BasePresenter;
+import com.cgwx.yyfwptz.lixiang.leifeng0_2.utils.Constants;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.activity.MainActivity;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.activity.PanoramaActivity;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.DetectFragmentWithMap;
@@ -48,9 +49,9 @@ import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.MyOrientationListener;
 import com.yinglan.scrolllayout.ScrollLayout;
 import com.yixia.camera.util.Log;
-
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.presenters.mainActivitypresenter.MainActivityPresenter.homeFragmentNormal;
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.presenters.mainActivitypresenter.MainActivityPresenter.homeFragmentWithMap2;
+import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.URL;
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.baiduMap;
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.bitmapDescriptor;
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.mapView;
@@ -133,11 +134,15 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
                 hideButton = new Button(MainActivity.mainActivity.getApplicationContext());
                 InfoWindow.OnInfoWindowClickListener listener = null;
                 if (marker == markers[index]) {
-                    Log.e(" dsfds", "sfd ");
+                    scrollLayout.setToExit();
+                    getURLRequest(Constants.homeFragmentIconInfoURL);
+                    systemWebView.loadUrl(URL);
+                    scrollLayout.setMinOffset(300);
+                    scrollLayout.setToClosed();
                     hideButton.setBackgroundColor(0x000000);
                     listener = new InfoWindow.OnInfoWindowClickListener() {
                         public void onInfoWindowClick() {
-//                            Log.e(" dsfds","sfd ");
+
                         }
                     };
                     LatLng ll = marker.getPosition();
@@ -160,11 +165,9 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
                 hideButton = new Button(MainActivity.mainActivity.getApplicationContext());
                 InfoWindow.OnInfoWindowClickListener listener = null;
                 if (marker == locationIcon) {
-                    Log.e(" dsfds", "sfd ");
                     hideButton.setBackgroundColor(0x000000);
                     listener = new InfoWindow.OnInfoWindowClickListener() {
                         public void onInfoWindowClick() {
-//                            Log.e(" dsfds","sfd ");
                         }
                     };
                     LatLng ll = marker.getPosition();
@@ -375,10 +378,14 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
             public void onMapLongClick(LatLng latLng) {
                 if (flag[0] == 0) {
                     showIcon(res, latLng);
+                    getURLRequest(Constants.homeFragmentWithMapUpPullURL);
+                    systemWebView.loadUrl(URL);
                     scrollLayout.setToOpen();
                     flag[0] = 1;
                 } else {
                     removeIcon();
+                    getURLRequest(Constants.homeFragmentWithMapUpPullURL);
+                    systemWebView.loadUrl(URL);
                     scrollLayout.setToOpen();
                     showIcon(res, latLng);
                 }

@@ -16,6 +16,8 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.BMapManager;
+import com.baidu.mapapi.clusterutil.clustering.ClusterItem;
+import com.baidu.mapapi.clusterutil.clustering.ClusterManager;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -49,11 +51,17 @@ import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.MyOrientationListener;
 import com.yinglan.scrolllayout.ScrollLayout;
 import com.yixia.camera.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.presenters.mainActivitypresenter.MainActivityPresenter.homeFragmentNormal;
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.presenters.mainActivitypresenter.MainActivityPresenter.homeFragmentWithMap2;
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.URL;
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.baiduMap;
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.bitmapDescriptor;
+import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.clusterManager;
+import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.mapStatus;
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.mapView;
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.locationMode;
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2.mlocationClient;
@@ -86,6 +94,8 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
     public static double latitude;
     public static double longitude;
     public static String geoInfo;
+    List<MyItem> items = new ArrayList<MyItem>();
+    private LatLng iconLatLng;
 
 
     @Override
@@ -110,17 +120,36 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
      *
      * @param icons
      */
-    public void setIcon(Icon[] icons) {
+    public void setIcon(Icon[] icons, ClusterManager clusterManager) {
         int index = 0;
         markers = new Marker[icons.length];
-        for (Icon i : icons) {
-            Bitmap bitmap = BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), R.drawable.icon_gcoding);
-            bitmap = icon_format(bitmap, 75, 75);
-            bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
-            setIcon(index);
-            initOverlay(i.getLatitude(), i.getLangitude(), bitmapDescriptor, index);
+
+        setIcon(index);
+
+//        for (Icon ic : icons) {
+//            Bitmap bitmap = icon_format(BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), R.drawable.icon_gcoding), 75, 75);
+//            bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
+//            setIcon(index);
+//            initOverlay(ic.getLatitude(), ic.getLangitude(), bitmapDescriptor, index);
+//            index++;
+//        }
+
+    }
+
+    public void testSetIcon(Icon[] icons) {
+        int index = 1;
+        mapStatus = new MapStatus.Builder().target(new LatLng(39.914935, 116.403119)).zoom(8).build();//地图状态创建者,LatLng(39.914935, 116.403119):设置中心点坐标；zoom(8)：设置地图缩放级别
+        baiduMap = mapView.getMap();
+        baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(mapStatus));
+        clusterManager = new ClusterManager<MyItem>(MainActivity.mainActivity, baiduMap);
+        for (Icon icon :
+                icons) {
+            LatLng l = new LatLng(icon.getLatitude(), icon.getLangitude());
+            items.add(new MyItem(l, index));
             index++;
         }
+        clusterManager.addItems(items);
+        baiduMap.setOnMapStatusChangeListener(clusterManager);
     }
 
     private void setIcon(final int index) {
@@ -128,7 +157,6 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
         baiduMap.setMyLocationEnabled(true);
         mapStatusUpdate = MapStatusUpdateFactory.zoomTo(17.0f);
         baiduMap.setMapStatus(mapStatusUpdate);
-
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             public boolean onMarkerClick(final Marker marker) {
                 hideButton = new Button(MainActivity.mainActivity.getApplicationContext());
@@ -306,6 +334,11 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
                 baiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder().zoom(17).build()));
                 isFirstIn = false;
             }
+        }
+
+
+        public void onConnectHotSpotMessage(String s, int i) {
+
         }
 
         public void onReceivePoi(BDLocation poiLocation) {
@@ -496,5 +529,27 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
 
     public void getLotionInfo() {
 
+    }
+
+    public class MyItem implements ClusterItem {//是ClusterItem接口的实现类，此类主要用来生成地图最终显示的marker，所以包含了经纬度坐标，marker的icon图标，
+        private final LatLng mPosition;
+        private final int index;
+
+        public MyItem(LatLng latLng, int i) {
+            mPosition = latLng;
+            index = i;
+        }
+
+        @Override
+        public LatLng getPosition() {
+            return mPosition;
+        }//返回marker的坐标
+
+        @Override
+        public BitmapDescriptor getBitmapDescriptor() {//返回marker的图标
+            Bitmap bitmap = icon_format(BitmapFactory.decodeResource(MainActivity.mainActivity.getResources(), R.drawable.icon_gcoding), 75, 75);
+            bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
+            return bitmapDescriptor;
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.cgwx.yyfwptz.lixiang.leifeng0_2.entities;
 
+import com.baidu.mapapi.model.LatLng;
+
 /**
  * Created by yyfwptz on 2017/3/30.
  */
@@ -7,6 +9,16 @@ package com.cgwx.yyfwptz.lixiang.leifeng0_2.entities;
 public class Icon {
     double langitude;
     double latitude;
+    LatLng latLng;
+
+    public LatLng getLatLng() {
+        return latLng;
+    }
+
+    public void setLatLng(LatLng latLng) {
+        this.latLng = latLng;
+    }
+
     String distance;
 
     public double getLangitude() {

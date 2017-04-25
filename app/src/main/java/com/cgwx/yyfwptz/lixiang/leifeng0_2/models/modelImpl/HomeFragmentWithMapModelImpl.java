@@ -7,6 +7,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.model.LatLng;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.entities.Icon;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.models.modelInterface.HomeFragmentWithMapModelInterface;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.models.modelInterface.OnSendArrayListener;
@@ -28,6 +29,7 @@ public class HomeFragmentWithMapModelImpl implements HomeFragmentWithMapModelInt
     Icon icon3 = new Icon();
     Icon icon4 = new Icon();
     Icon icon5 = new Icon();
+    LatLng latLng;
     private LocationClient mLocationClient;
     private BDLocationListener mBDLocationListener;
 
@@ -35,6 +37,7 @@ public class HomeFragmentWithMapModelImpl implements HomeFragmentWithMapModelInt
     public void insert() {
         icon1.setLatitude(43.976765990111566);
         icon1.setLangitude(125.39304679529695);
+        LatLng i1 = new LatLng(icon1.getLatitude(), icon1.getLangitude());
 
         icon2.setLatitude(43.98045709845306);
         icon2.setLangitude(125.39393611775184);
@@ -89,6 +92,10 @@ public class HomeFragmentWithMapModelImpl implements HomeFragmentWithMapModelInt
                 if (mLocationClient.isStarted())
                     mLocationClient.stop();
             }
+        }
+
+        public void onConnectHotSpotMessage(String s, int i) {
+
         }
     }
 

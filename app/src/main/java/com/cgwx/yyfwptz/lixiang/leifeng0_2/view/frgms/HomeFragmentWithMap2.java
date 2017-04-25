@@ -14,8 +14,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.clusterutil.clustering.ClusterItem;
+import com.baidu.mapapi.clusterutil.clustering.ClusterManager;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
@@ -49,7 +53,7 @@ import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.activity.MainActivity.rec
  * Created by Jay on 2015/8/28 0028.
  */
 
-public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Presenter, HomeFragmentWithMap2> implements BaseViewInterface, CordovaInterface {
+public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Presenter, HomeFragmentWithMap2> implements BaseViewInterface, CordovaInterface, BaiduMap.OnMapLoadedCallback {
     public static TextureMapView mapView = null;
     public static BaiduMap baiduMap;
     public static LocationClient mlocationClient;
@@ -77,7 +81,8 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
     private CordovaWebView cordovaWebView;
     private ConfigXmlParser configXmlParser;
     public static String URL;
-
+    public static ClusterManager<HomeFragmentWithMap2Presenter.MyItem> clusterManager;
+    public static MapStatus mapStatus;
 
     public HomeFragmentWithMap2() {
     }
@@ -128,7 +133,8 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
         fpresenter.initialScrollLayout(scrollLayout);
         fpresenter.initLocation(resources);
         fpresenter.getIcons();
-        fpresenter.setIcon(icons);
+        fpresenter.testSetIcon(icons);
+        fpresenter.setIcon(icons, clusterManager);
         fpresenter.setLocation(resources);
         changeView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,5 +240,11 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
     public void getURL(String URLresponse) {
         URL = URLresponse;
     }
+
+    @Override
+    public void onMapLoaded() {
+
+    }
+
 
 }

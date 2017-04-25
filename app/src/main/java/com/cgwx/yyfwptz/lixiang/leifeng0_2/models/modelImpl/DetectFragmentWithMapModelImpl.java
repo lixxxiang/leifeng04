@@ -88,5 +88,9 @@ public class DetectFragmentWithMapModelImpl implements DetectFragmentWithMapMode
                     mLocationClient.stop();
             }
         }
+
+        public void onConnectHotSpotMessage(String s, int i) {
+
+        }
     }
 }

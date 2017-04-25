@@ -98,6 +98,8 @@ public class HomeFragmentWithMapModelImpl implements HomeFragmentWithMapModelInt
             listener.sendString(Constants.homeFragmentWithMapUpPullURL);
         }else if (request.equals(Constants.homeFragmentIconInfoURL)){
             listener.sendString(Constants.homeFragmentIconInfoURL);
+        }else if (request.equals(Constants.homeFragmentWithMapSearchURL)){
+            listener.sendString(Constants.homeFragmentWithMapSearchURL);
         }
     }
 }

@@ -62,7 +62,7 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
     @BindView(R.id.panorama)
     Button panoramaView;
     public static SystemWebView systemWebView;
-
+    public static SystemWebView searchView;
     private FragmentManager fragmentManager;
     private Icon[] icons;
     private Resources resources;
@@ -98,10 +98,12 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
         fragmentManager = getFragmentManager();
 
         systemWebView = (SystemWebView) view.findViewById(R.id.cordovaWebView);
+        searchView = (SystemWebView) view.findViewById(R.id.cordovaWebView2);
+
         scrollLayout = (ScrollLayout) view.findViewById(R.id.scroll_down_layout);
         mapView = (TextureMapView) view.findViewById(R.id.bmapView);
-//        fpresenter.getURLRequest(Constants.homeFragmentWithMapUpPullURL);
-//        systemWebView.loadUrl(URL);
+        fpresenter.getURLRequest(Constants.homeFragmentWithMapSearchURL);
+        searchView.loadUrl(URL);
         cordovaWebView = new CordovaWebViewImpl(new SystemWebViewEngine(systemWebView));
         configXmlParser = new ConfigXmlParser();
         configXmlParser.parse(getActivity());

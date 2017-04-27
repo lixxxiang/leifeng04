@@ -65,6 +65,8 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
     Button changeView;
     @BindView(R.id.panorama)
     Button panoramaView;
+    @BindView(R.id.locate)
+    Button locate;
     public static SystemWebView systemWebView;
     public static SystemWebView searchView;
     private FragmentManager fragmentManager;
@@ -146,6 +148,12 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
             @Override
             public void onClick(View v) {
                 fpresenter.panoramaView();
+            }
+        });
+        locate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fpresenter.initLocation(resources);
             }
         });
         return view;

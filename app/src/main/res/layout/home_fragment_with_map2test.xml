@@ -46,6 +46,17 @@
         android:background="@drawable/main_map_icon_streetscape_selected"
         />
 
+    <Button
+        android:id="@+id/locate"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/bmskin_main_icon_location"/>
 
     <com.yinglan.scrolllayout.ScrollLayout
         android:id="@+id/scroll_down_layout"

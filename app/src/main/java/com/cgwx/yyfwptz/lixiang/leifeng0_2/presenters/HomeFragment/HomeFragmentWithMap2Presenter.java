@@ -16,6 +16,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.BMapManager;
+import com.baidu.mapapi.clusterutil.clustering.Cluster;
 import com.baidu.mapapi.clusterutil.clustering.ClusterItem;
 import com.baidu.mapapi.clusterutil.clustering.ClusterManager;
 import com.baidu.mapapi.map.BaiduMap;
@@ -133,7 +134,6 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
 //            initOverlay(ic.getLatitude(), ic.getLangitude(), bitmapDescriptor, index);
 //            index++;
 //        }
-
     }
 
     public void testSetIcon(Icon[] icons) {
@@ -142,14 +142,33 @@ public class HomeFragmentWithMap2Presenter extends BasePresenter<HomeFragmentWit
         baiduMap = mapView.getMap();
         baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(mapStatus));
         clusterManager = new ClusterManager<MyItem>(MainActivity.mainActivity, baiduMap);
-        for (Icon icon :
-                icons) {
+        for (Icon icon : icons) {
             LatLng l = new LatLng(icon.getLatitude(), icon.getLangitude());
             items.add(new MyItem(l, index));
             index++;
         }
         clusterManager.addItems(items);
         baiduMap.setOnMapStatusChangeListener(clusterManager);
+        baiduMap.setOnMarkerClickListener(clusterManager);
+        clusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<MyItem>() {
+            @Override
+            public boolean onClusterClick(Cluster<MyItem> cluster) {
+                Toast.makeText(MainActivity.mainActivity, "请放大点击", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
+
+        clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MyItem>() {
+            @Override
+            public boolean onClusterItemClick(MyItem item) {
+                scrollLayout.setToExit();
+                getURLRequest(Constants.homeFragmentIconInfoURL);
+                systemWebView.loadUrl(URL);
+                scrollLayout.setMinOffset(300);
+                scrollLayout.setToClosed();
+                return false;
+            }
+        });
     }
 
     private void setIcon(final int index) {

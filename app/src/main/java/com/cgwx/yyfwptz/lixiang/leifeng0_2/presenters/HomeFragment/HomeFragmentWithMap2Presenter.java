@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -51,8 +52,6 @@ import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.DetectFragmentWithMap;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.HomeFragmentWithMap2;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.frgms.MyOrientationListener;
 import com.yinglan.scrolllayout.ScrollLayout;
-import com.yixia.camera.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 

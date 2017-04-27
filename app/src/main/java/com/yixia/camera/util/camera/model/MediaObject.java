@@ -1,7 +1,7 @@
-package com.yixia.camera.model;
+package com.yixia.camera.util.camera.model;
 
-import com.yixia.camera.util.FileUtils;
-import com.yixia.camera.util.StringUtils;
+import com.yixia.camera.util.camera.util.FileUtils;
+import com.yixia.camera.util.camera.util.StringUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

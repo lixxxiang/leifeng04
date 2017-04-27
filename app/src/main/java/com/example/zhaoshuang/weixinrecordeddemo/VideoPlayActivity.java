@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.R;
+import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.activity.BaseActivity;
 import com.yixia.camera.MediaRecorderBase;
-import com.yixia.camera.util.Log;
 
 /**
  * Created by zhaoshuang on 17/2/24.
@@ -19,7 +19,6 @@ public class VideoPlayActivity extends BaseRecordActivity {
     private MyVideoView vv_play;
     private int windowWidth;
     private int windowHeight;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,6 @@ public class VideoPlayActivity extends BaseRecordActivity {
 
         Intent intent = getIntent();
         String path = intent.getStringExtra("path");
-        Log.e("pathh2",path);
 
         vv_play.setVideoPath(path);
         vv_play.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -44,7 +42,7 @@ public class VideoPlayActivity extends BaseRecordActivity {
                 vv_play.start();
 
                 float widthF = vv_play.getVideoWidth()*1f/ MediaRecorderBase.VIDEO_HEIGHT;
-                float heightF = vv_play.getVideoHeight()*1f/MediaRecorderBase.VIDEO_WIDTH;
+                float heightF = vv_play.getVideoHeight()*1f/ MediaRecorderBase.VIDEO_WIDTH;
                 ViewGroup.LayoutParams layoutParams = vv_play.getLayoutParams();
                 layoutParams.width = (int) (windowWidth *widthF);
                 layoutParams.height = (int) (windowHeight *heightF);

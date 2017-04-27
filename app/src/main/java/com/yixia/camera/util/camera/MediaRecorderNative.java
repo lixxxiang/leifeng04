@@ -1,11 +1,11 @@
-package com.yixia.camera;
+package com.yixia.camera.util.camera;
 
 import android.hardware.Camera;
 import android.media.MediaRecorder;
 import android.util.Log;
 
-import com.yixia.camera.model.MediaObject;
-import com.yixia.videoeditor.adapter.UtilityAdapter;
+import com.yixia.camera.util.adapter.UtilityAdapter;
+import com.yixia.camera.util.camera.model.MediaObject;
 
 /**
  * 视频录制：边录制边底层处理视频（旋转和裁剪）
@@ -25,7 +25,7 @@ public class MediaRecorderNative extends MediaRecorderBase implements MediaRecor
 		if (!UtilityAdapter.isInitialized()) {
 			UtilityAdapter.initFilterParser();
 		}
-		
+
 		MediaObject.MediaPart result = null;
 
 		if (mMediaObject != null) {

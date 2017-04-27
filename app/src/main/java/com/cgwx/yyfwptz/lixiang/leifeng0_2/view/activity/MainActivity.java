@@ -13,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.R;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.BaseViewInterface;
+import com.example.zhaoshuang.weixinrecordeddemo.RecordActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +48,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter, MainActivi
 //                presenter.performOnClick();//test
 //                Intent intent = new Intent(MainActivity.this, getLocationDemo.class);
 //                MainActivity.this.startActivity(intent);
-                Intent intent = new Intent(MainActivity.this, tempChooseRecordActivity.class);
+                Intent intent = new Intent(MainActivity.this, RecordActivity.class);
                 startActivity(intent);
             }
         });

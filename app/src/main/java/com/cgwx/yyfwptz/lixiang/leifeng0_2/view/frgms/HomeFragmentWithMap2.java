@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,23 +15,18 @@ import android.view.WindowManager;
 import android.widget.Button;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.clusterutil.clustering.ClusterItem;
 import com.baidu.mapapi.clusterutil.clustering.ClusterManager;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.TextureMapView;
-import com.baidu.mapapi.model.LatLng;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.R;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.entities.Icon;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.presenters.HomeFragment.HomeFragmentWithMap2Presenter;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.utils.Constants;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.BaseViewInterface;
 import com.yinglan.scrolllayout.ScrollLayout;
-import com.yixia.camera.util.Log;
-
 import org.apache.cordova.ConfigXmlParser;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
@@ -46,7 +42,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.cgwx.yyfwptz.lixiang.leifeng0_2.utils.Utils.checkPermission;
-import static com.cgwx.yyfwptz.lixiang.leifeng0_2.view.activity.MainActivity.record;
 
 
 /**

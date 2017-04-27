@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
 
+
     <application
         android:name=".LFApplication"
         android:allowBackup="true"
@@ -31,6 +32,7 @@
             android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -39,7 +41,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait" />
         <activity android:name=".view.activity.getLocationDemo" />
-        <activity android:name="com.example.zhaoshuang.weixinrecordeddemo.Record2Activity" />
+        <activity android:name="com.example.zhaoshuang.weixinrecordeddemo.RecordActivity" />
         <activity android:name="com.example.zhaoshuang.weixinrecordeddemo.VideoPlayActivity" />
         <activity
             android:name=".view.activity.tempChooseRecordActivity"
@@ -49,17 +51,14 @@
         <activity
             android:name=".view.activity.SendSmallVideoActivity"
             android:theme="@style/AppNoBarTheme" />
-
         <activity
-        android:name=".view.activity.PanoramaActivity"
-        android:theme="@style/AppNoBarTheme">
+            android:name=".view.activity.PanoramaActivity"
+            android:theme="@style/AppNoBarTheme" />
 
-        </activity>
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"></service>
-
+            android:process=":remote" />
     </application>
 
 </manifest>

@@ -8,12 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.R;
-import com.example.zhaoshuang.weixinrecordeddemo.Record2Activity;
+import com.example.zhaoshuang.weixinrecordeddemo.RecordActivity;
 
 import java.io.File;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import mabeijianxi.camera.MediaRecorderActivity;
@@ -57,7 +55,7 @@ public class tempChooseRecordActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(tempChooseRecordActivity.this,Record2Activity.class);
+                Intent intent = new Intent(tempChooseRecordActivity.this,RecordActivity.class);
                 startActivity(intent);
             }
         });

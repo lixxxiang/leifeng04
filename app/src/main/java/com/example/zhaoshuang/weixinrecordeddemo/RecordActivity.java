@@ -1,6 +1,7 @@
 package com.example.zhaoshuang.weixinrecordeddemo;
 
 import android.content.Intent;
+import android.icu.text.AlphabeticIndex;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,14 +13,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cgwx.yyfwptz.lixiang.leifeng0_2.LFApplication;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.R;
 import com.yixia.camera.MediaRecorderNative;
 import com.yixia.camera.VCamera;
 import com.yixia.camera.model.MediaObject;
-import com.yixia.camera.util.Log;
 import com.yixia.videoeditor.adapter.UtilityAdapter;
 
-import java.io.File;
 import java.util.LinkedList;
 
 /**
@@ -28,12 +28,11 @@ import java.util.LinkedList;
  * 使用的是免费第三方VCamera
  * Created by zhaoshuang on 17/2/8.
  */
-public class Record2Activity extends BaseRecordActivity implements View.OnClickListener {
+public class RecordActivity extends BaseRecordActivity implements View.OnClickListener{
 
     private static final int REQUEST_KEY = 100;
     private static final int HANDLER_RECORD = 200;
     private static final int HANDLER_EDIT_VIDEO = 201;
-    public static String VIDEO_PATH =  "/sdcard/LeiFengRecordedDemo/";
 
     private MediaRecorderNative mMediaRecorder;
     private MediaObject mMediaObject;
@@ -57,13 +56,6 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_record);
 
-        VIDEO_PATH += String.valueOf(System.currentTimeMillis());
-        File file = new File(VIDEO_PATH);
-        if(!file.exists()) file.mkdirs();
-        VCamera.setVideoCachePath(VIDEO_PATH);
-        VCamera.setDebugMode(true);
-        VCamera.initialize(this);
-
         sv_ffmpeg = (FocusSurfaceView) findViewById(R.id.sv_ffmpeg);
         rb_start = (RecordedButton) findViewById(R.id.rb_start);
         vv_play = (MyVideoView) findViewById(R.id.vv_play);
@@ -74,6 +66,7 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
         rl_bottom2 = (RelativeLayout) findViewById(R.id.rl_bottom2);
         ImageView iv_next = (ImageView) findViewById(R.id.iv_next);
         ImageView iv_close = (ImageView) findViewById(R.id.iv_close);
+
         initMediaRecorder();
 
         sv_ffmpeg.setTouchFocus(mMediaRecorder);
@@ -88,18 +81,15 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
                 rb_start.setSplit();
                 myHandler.sendEmptyMessageDelayed(HANDLER_RECORD, 100);
             }
-
             @Override
             public void onClick() {
             }
-
             @Override
             public void onLift() {
                 isRecordedOver = true;
                 mMediaRecorder.stopRecord();
                 changeButton(mMediaObject.getMediaParts().size() > 0);
             }
-
             @Override
             public void onOver() {
                 isRecordedOver = true;
@@ -115,12 +105,12 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
         iv_close.setOnClickListener(this);
     }
 
-    private void changeButton(boolean flag) {
+    private void changeButton(boolean flag){
 
-        if (flag) {
+        if(flag){
             tv_hint.setVisibility(View.VISIBLE);
             rl_bottom.setVisibility(View.VISIBLE);
-        } else {
+        }else{
             tv_hint.setVisibility(View.GONE);
             rl_bottom.setVisibility(View.GONE);
         }
@@ -129,7 +119,7 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
     /**
      * 初始化视频拍摄状态
      */
-    private void initMediaRecorderState() {
+    private void initMediaRecorderState(){
 
         vv_play.setVisibility(View.GONE);
         vv_play.pause();
@@ -142,7 +132,7 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
         LinkedList<MediaObject.MediaPart> list = new LinkedList<>();
         list.addAll(mMediaObject.getMediaParts());
 
-        for (MediaObject.MediaPart part : list) {
+        for (MediaObject.MediaPart part : list){
             mMediaObject.removePart(part, true);
         }
 
@@ -160,13 +150,13 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
         myHandler.sendEmptyMessage(HANDLER_EDIT_VIDEO);
     }
 
-    private Handler myHandler = new Handler() {
+    private Handler myHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
+            switch (msg.what){
                 case HANDLER_RECORD://拍摄视频的handler
-                    if (!isRecordedOver) {
-                        if (rl_bottom.getVisibility() == View.VISIBLE) {
+                    if(!isRecordedOver){
+                        if(rl_bottom.getVisibility() == View.VISIBLE) {
                             changeButton(false);
                         }
                         rb_start.setProgress(mMediaObject.getDuration());
@@ -175,7 +165,7 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
                     break;
                 case HANDLER_EDIT_VIDEO://合成视频的handler
                     int progress = UtilityAdapter.FilterParserAction("", UtilityAdapter.PARSERACTION_PROGRESS);
-                    if (textView != null) textView.setText("视频编译中 " + progress + "%");
+                    if(textView != null) textView.setText("视频编译中 "+progress+"%");
                     if (progress == 100) {
                         syntVideo();
                     } else if (progress == -1) {
@@ -192,29 +182,29 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
     /**
      * 合成视频
      */
-    private void syntVideo() {
+    private void syntVideo(){
 
         //ffmpeg -i "concat:ts0.ts|ts1.ts|ts2.ts|ts3.ts" -c copy -bsf:a aac_adtstoasc out2.mp4
         StringBuilder sb = new StringBuilder("ffmpeg");
         sb.append(" -i");
-        String concat = "concat:";
-        for (MediaObject.MediaPart part : mMediaObject.getMediaParts()) {
-            concat += part.mediaPath;
+        String concat="concat:";
+        for (MediaObject.MediaPart part : mMediaObject.getMediaParts()){
+            concat+=part.mediaPath;
             concat += "|";
         }
-        concat = concat.substring(0, concat.length() - 1);
-        sb.append(" " + concat);
+        concat = concat.substring(0, concat.length()-1);
+        sb.append(" "+concat);
         sb.append(" -c");
         sb.append(" copy");
         sb.append(" -bsf:a");
         sb.append(" aac_adtstoasc");
         sb.append(" -y");
-        String output = VIDEO_PATH + "/finish.mp4";
-        sb.append(" " + output);
+        String output = LFApplication.VIDEO_PATH+"/finish.mp4";
+        sb.append(" "+output);
 
         int i = UtilityAdapter.FFmpegRun("", sb.toString());
         closeProgressDialog();
-        if (i == 0) {
+        if(i == 0){
             rl_bottom2.setVisibility(View.VISIBLE);
             vv_play.setVisibility(View.VISIBLE);
 
@@ -226,11 +216,11 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
                     vv_play.start();
                 }
             });
-            if (vv_play.isPrepared()) {
+            if(vv_play.isPrepared()){
                 vv_play.setLooping(true);
                 vv_play.start();
             }
-        } else {
+        }else{
             Toast.makeText(getApplicationContext(), "视频合成失败", Toast.LENGTH_SHORT).show();
         }
     }
@@ -267,17 +257,25 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        if (rb_start.getSplitCount() == 0) {
+        if(rb_start.getSplitCount() == 0) {
             super.onBackPressed();
-        } else {
+        }else{
             initMediaRecorderState();
         }
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        mMediaObject.cleanTheme();
+        mMediaRecorder.release();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_KEY) {
+        if(resultCode == RESULT_OK){
+            if(requestCode == REQUEST_KEY){
                 initMediaRecorderState();
             }
         }
@@ -285,16 +283,16 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        switch (v.getId()){
             case R.id.iv_back:
-                if (rb_start.isDeleteMode()) {//判断是否要删除视频段落
+                if(rb_start.isDeleteMode()){//判断是否要删除视频段落
                     MediaObject.MediaPart lastPart = mMediaObject.getPart(mMediaObject.getMediaParts().size() - 1);
                     mMediaObject.removePart(lastPart, true);
                     rb_start.setProgress(mMediaObject.getDuration());
                     rb_start.deleteSplit();
                     changeButton(mMediaObject.getMediaParts().size() > 0);
                     iv_back.setImageResource(R.mipmap.video_delete);
-                } else if (mMediaObject.getMediaParts().size() > 0) {
+                }else if(mMediaObject.getMediaParts().size() > 0){
                     rb_start.setDeleteMode(true);
                     iv_back.setImageResource(R.mipmap.video_delete_click);
                 }
@@ -304,9 +302,8 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
                 break;
             case R.id.iv_next:
                 rb_start.setDeleteMode(false);
-                Intent intent = new Intent(Record2Activity.this, VideoPlayActivity.class);
-                intent.putExtra("path", VIDEO_PATH + "/finish.mp4");
-                Log.e("pathh1", VIDEO_PATH + "/finish.mp4");
+                Intent intent = new Intent(RecordActivity.this, VideoPlayActivity.class);
+                intent.putExtra("path", LFApplication.VIDEO_PATH+"/finish.mp4");
                 startActivityForResult(intent, REQUEST_KEY);
                 break;
             case R.id.iv_close:
@@ -314,12 +311,4 @@ public class Record2Activity extends BaseRecordActivity implements View.OnClickL
                 break;
         }
     }
-
-    @Override
-    public void finish() {
-        super.finish();
-        VIDEO_PATH =  "/sdcard/LeiFengRecordedDemo/";
-
-    }
 }
-

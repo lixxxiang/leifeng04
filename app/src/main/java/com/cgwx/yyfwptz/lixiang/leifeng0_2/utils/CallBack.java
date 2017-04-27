@@ -1,10 +1,9 @@
 package com.cgwx.yyfwptz.lixiang.leifeng0_2.utils;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.activity.MainActivity;
-import com.yixia.camera.util.Log;
-
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;

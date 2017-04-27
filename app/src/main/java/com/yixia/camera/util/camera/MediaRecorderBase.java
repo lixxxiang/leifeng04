@@ -1,4 +1,4 @@
-package com.yixia.camera;
+package com.yixia.camera.util.camera;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -19,11 +19,11 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 
-import com.yixia.camera.model.MediaObject;
-import com.yixia.camera.util.DeviceUtils;
-import com.yixia.camera.util.FileUtils;
-import com.yixia.camera.util.StringUtils;
-import com.yixia.videoeditor.adapter.UtilityAdapter;
+import com.yixia.camera.util.adapter.UtilityAdapter;
+import com.yixia.camera.util.camera.model.MediaObject;
+import com.yixia.camera.util.camera.util.DeviceUtils;
+import com.yixia.camera.util.camera.util.FileUtils;
+import com.yixia.camera.util.camera.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;

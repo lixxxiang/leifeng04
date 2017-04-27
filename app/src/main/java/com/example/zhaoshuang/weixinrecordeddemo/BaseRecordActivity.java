@@ -1,7 +1,8 @@
 package com.example.zhaoshuang.weixinrecordeddemo;
 
-
 import android.app.Activity;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -13,7 +14,7 @@ import com.cgwx.yyfwptz.lixiang.leifeng0_2.R;
  * Created by zhaoshuang on 17/2/23.
  */
 
-public abstract class BaseRecordActivity extends Activity {
+public abstract class BaseRecordActivity extends Activity{
 
     private AlertDialog progressDialog;
 
@@ -25,9 +26,9 @@ public abstract class BaseRecordActivity extends Activity {
         builder.setView(view);
         ProgressBar pb_loading = (ProgressBar) view.findViewById(R.id.pb_loading);
         TextView tv_hint = (TextView) view.findViewById(R.id.tv_hint);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            pb_loading.setIndeterminateTintList(ContextCompat.getColorStateList(this, R.color.dialog_pro_color));
-//        }
+        }
         tv_hint.setText("视频编译中");
         progressDialog = builder.create();
         progressDialog.show();

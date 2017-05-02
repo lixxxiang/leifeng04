@@ -8,4 +8,5 @@ import com.cgwx.yyfwptz.lixiang.leifeng0_2.models.BaseModelInterface;
 
 public interface DetectFragmentWithMapModelInterface extends BaseModelInterface {
     void getIcons(OnSendArrayListener listener);
+    void geturl(String request, OnSendStringListener listener);
 }

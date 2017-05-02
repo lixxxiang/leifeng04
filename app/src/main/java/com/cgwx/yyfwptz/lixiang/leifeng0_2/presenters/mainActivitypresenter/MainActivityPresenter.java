@@ -55,43 +55,33 @@ public class MainActivityPresenter extends BasePresenter<MainActivity, MainActiv
                 if (detectFragmentWithMap != null)
                     fragmentTransaction.hide(detectFragmentWithMap);
                 if (homeFragmentNormal == null) {
+
                     homeFragmentNormal = new HomeFragmentNormal();
-//                    homeFragmentWithMap = new HomeFragmentWithMap();
-
                     homeFragmentWithMap2 = new HomeFragmentWithMap2();
-
                     detectFragmentNormal = new DetectFragmentNormal();
                     detectFragmentWithMap = new DetectFragmentWithMap();
+
                     fragmentTransaction.add(R.id.ly_content, homeFragmentNormal);
-//                    fragmentTransaction.add(R.id.ly_content, homeFragmentWithMap);
-
                     fragmentTransaction.add(R.id.ly_content, homeFragmentWithMap2);
-
                     fragmentTransaction.add(R.id.ly_content, detectFragmentNormal);
                     fragmentTransaction.add(R.id.ly_content, detectFragmentWithMap);
-//                    fragmentTransaction.hide(homeFragmentWithMap);
-                    fragmentTransaction.hide(homeFragmentWithMap2);
 
+                    fragmentTransaction.hide(homeFragmentWithMap2);
                     fragmentTransaction.hide(detectFragmentNormal);
                     fragmentTransaction.hide(detectFragmentWithMap);
                 } else if (detectFragmentNormal.isHidden())
-//                    fragmentTransaction.show(homeFragmentWithMap);
-                fragmentTransaction.show(homeFragmentWithMap2);
-
+                    fragmentTransaction.show(homeFragmentWithMap2);
                 else
                     fragmentTransaction.show(homeFragmentNormal);
                 break;
             case R.id.rb_detect:
                 if (homeFragmentNormal != null)
                     fragmentTransaction.hide(homeFragmentNormal);
-//                if (homeFragmentWithMap != null)
-//                    fragmentTransaction.hide(homeFragmentWithMap);
                 if (homeFragmentWithMap2 != null)
                     fragmentTransaction.hide(homeFragmentWithMap2);
 
                 if (homeFragmentNormal.isHidden())
                     fragmentTransaction.show(detectFragmentWithMap);
-//                else if (homeFragmentWithMap.isHidden())
                 else if (homeFragmentWithMap2.isHidden())
 
                     fragmentTransaction.show(detectFragmentNormal);

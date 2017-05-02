@@ -58,15 +58,16 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
     public static BaiduMap baiduMap;
     public static LocationClient mlocationClient;
     public static Context context;
-    private View view;
+    public View view;
 
 
-    @BindView(R.id.changeView)
+    @BindView(R.id.changeView)//声明注解
     Button changeView;
     @BindView(R.id.panorama)
     Button panoramaView;
     @BindView(R.id.locate)
     Button locate;
+
     public static SystemWebView systemWebView;
     public static SystemWebView searchView;
     private FragmentManager fragmentManager;
@@ -92,25 +93,25 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
-
         SDKInitializer.initialize(getActivity().getApplication());
-        view = inflater.inflate(R.layout.home_fragment_with_map2test, container, false);
+        view = inflater.inflate(R.layout.home_fragment_with_map2test, container, false);//加载布局文件
 
         checkPermission();
 
-        ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);//加载上面生成的类，然后调用其bind方法
         context = getActivity();
         resources = getResources();
         fragmentManager = getFragmentManager();
 
         systemWebView = (SystemWebView) view.findViewById(R.id.cordovaWebView);
         searchView = (SystemWebView) view.findViewById(R.id.cordovaWebView2);
-
         scrollLayout = (ScrollLayout) view.findViewById(R.id.scroll_down_layout);
+
         mapView = (TextureMapView) view.findViewById(R.id.bmapView);
-        fpresenter.getURLRequest(Constants.homeFragmentWithMapSearchURL);
+
+        fpresenter.getURLRequest(Constants.homeFragmentWithMapSearchURL);//将model中html加载上来
         searchView.loadUrl(URL);
+
         cordovaWebView = new CordovaWebViewImpl(new SystemWebViewEngine(systemWebView));
         configXmlParser = new ConfigXmlParser();
         configXmlParser.parse(getActivity());
@@ -132,7 +133,7 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
             }
         });
 
-        fpresenter.initialScrollLayout(scrollLayout);
+        fpresenter.initialScrollLayout(scrollLayout);//初始化上拉菜单
         fpresenter.initLocation(resources);
         fpresenter.getIcons();
         fpresenter.testSetIcon(icons);
@@ -159,7 +160,7 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
         return view;
     }
 
-    @Override
+        @Override
     protected HomeFragmentWithMap2Presenter getPresenter() {
         return new HomeFragmentWithMap2Presenter();
     }
@@ -253,6 +254,7 @@ public class HomeFragmentWithMap2 extends BaseFragment<HomeFragmentWithMap2Prese
     public void onMapLoaded() {
 
     }
+
 
 
 }

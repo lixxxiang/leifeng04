@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <com.baidu.mapapi.map.TextureMapView
-        android:id="@+id/bmapView"
+    <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true" />
+        android:layout_height="wrap_content">
+        <com.baidu.mapapi.map.TextureMapView
+            android:id="@+id/bmapView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true" />
+        <org.apache.cordova.engine.SystemWebView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/cordovaWebView2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            />
+    </FrameLayout>
+
 
     <Button
         android:id="@+id/changeView"
@@ -22,31 +35,52 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/ic_map_black_48dp" />
 
+    <Button
+        android:id="@+id/panorama"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/changeView"
+        android:layout_alignRight="@+id/changeView"
+        android:layout_below="@+id/changeView"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/main_map_icon_streetscape_selected"
+        />
+
+    <Button
+        android:id="@+id/locate"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/bmskin_main_icon_location"/>
 
     <com.yinglan.scrolllayout.ScrollLayout
         android:id="@+id/scroll_down_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000"
-        app:allowHorizontalScroll="true"
+        android:background="#00000000"
+        android:fillViewport="true"
         app:exitOffset="0dp"
         app:isSupportExit="true"
         app:maxOffset="200dp"
-        app:minOffset="50dp"
         app:mode="exit">
 
-        <com.yinglan.scrolllayout.content.ContentScrollView
+        <LinearLayout
             android:id="@+id/content_scroll_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white">
 
-            <EditText
-                android:id="@+id/text_view"
+            <org.apache.cordova.engine.SystemWebView
+                android:id="@+id/cordovaWebView"
                 android:layout_width="match_parent"
-                android:background="@null"
-                android:layout_height="200dp" />
-
-        </com.yinglan.scrolllayout.content.ContentScrollView>
+                android:layout_height="match_parent" />
+        </LinearLayout>
     </com.yinglan.scrolllayout.ScrollLayout>
+
+
 </RelativeLayout>

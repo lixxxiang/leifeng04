@@ -7,9 +7,12 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.model.LatLng;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.entities.Icon;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.models.modelInterface.DetectFragmentWithMapModelInterface;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.models.modelInterface.OnSendArrayListener;
+import com.cgwx.yyfwptz.lixiang.leifeng0_2.models.modelInterface.OnSendStringListener;
+import com.cgwx.yyfwptz.lixiang.leifeng0_2.utils.Constants;
 import com.cgwx.yyfwptz.lixiang.leifeng0_2.view.activity.MainActivity;
 
 
@@ -26,25 +29,27 @@ public class DetectFragmentWithMapModelImpl implements DetectFragmentWithMapMode
     Icon icon3 = new Icon();
     Icon icon4 = new Icon();
     Icon icon5 = new Icon();
+    LatLng latLng;
     private LocationClient mLocationClient;
     private BDLocationListener mBDLocationListener;
 
 
     public void insert() {
-        icon1.setLatitude(44.000000);
-        icon1.setLangitude(125.410000);
+        icon1.setLatitude(43.976765990111566);
+        icon1.setLangitude(125.39304679529695);
+        LatLng i1 = new LatLng(icon1.getLatitude(), icon1.getLangitude());
 
-        icon2.setLatitude(44.030000);
-        icon2.setLangitude(125.440000);
+        icon2.setLatitude(43.98045709845306);
+        icon2.setLangitude(125.39393611775184);
 
-        icon3.setLatitude(44.060000);
-        icon3.setLangitude(125.470000);
+        icon3.setLatitude(43.980379256725655);
+        icon3.setLangitude(125.38560882567434);
 
-        icon4.setLatitude(44.090000);
-        icon4.setLangitude(125.500000);
+        icon4.setLatitude(43.97433323526407);
+        icon4.setLangitude(125.38875289495925);
 
-        icon5.setLatitude(44.120000);
-        icon5.setLangitude(125.530000);
+        icon5.setLatitude(43.981890665224014);
+        icon5.setLangitude(125.39140289621369);
     }
 
     Icon icons[] = {icon1, icon2, icon3, icon4, icon5};
@@ -91,6 +96,17 @@ public class DetectFragmentWithMapModelImpl implements DetectFragmentWithMapMode
 
         public void onConnectHotSpotMessage(String s, int i) {
 
+        }
+    }
+
+    @Override
+    public void geturl(String request, OnSendStringListener listener) {
+        if(request.equals(Constants.detectFragmentWithMapUpPullURL)){
+            listener.sendString(Constants.detectFragmentWithMapUpPullURL);
+        }else if (request.equals(Constants.detectFragmentIconInfoURL)){
+            listener.sendString(Constants.detectFragmentIconInfoURL);
+        }else if (request.equals(Constants.detectFragmentWithMapSearchURL)){
+            listener.sendString(Constants.detectFragmentWithMapSearchURL);
         }
     }
 }

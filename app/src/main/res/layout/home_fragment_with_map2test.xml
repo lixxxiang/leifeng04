@@ -78,8 +78,7 @@
             <org.apache.cordova.engine.SystemWebView
                 android:id="@+id/cordovaWebView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent" />
         </LinearLayout>
     </com.yinglan.scrolllayout.ScrollLayout>
 

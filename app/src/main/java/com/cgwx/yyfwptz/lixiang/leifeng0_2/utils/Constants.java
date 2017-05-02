@@ -14,4 +14,9 @@ public final class Constants {
     public static final String homeFragmentIconInfoURL = "file:///android_asset/www/home_fragment_icon_info.html";
     public static final String homeFragmentWithMapSearchURL = "file:///android_asset/www/home_fragment_with_map_search.html";
     public static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+
+    public static final String detectFragmentWithMapUpPullURL = "file:///android_asset/www/detect_fragment_with_map_up_pull.html";
+    public static final String detectFragmentIconInfoURL = "file:///android_asset/www/detect_fragment_icon_info.html";
+    public static final String detectFragmentWithMapSearchURL = "file:///android_asset/www/detect_fragment_with_map_search.html";
+
 }
